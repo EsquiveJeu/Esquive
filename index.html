@@ -1409,7 +1409,7 @@ if (CONFIG.ZONES.some(z => z.nom === profil.arene)) choisirArene(profil.arene);
 /* ---------- Classement : local par défaut + synchronisation publique optionnelle ---------- */
 // Pour un classement réellement public, crée une table Supabase et renseigne les deux valeurs ci-dessous.
 // Sans identifiants, le jeu conserve les scores localement et ne prétend pas qu'ils sont partagés.
-const CLASSEMENT_PUBLIC = { url: 'https://abcdxyz.supabase.co', cleAnonyme: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJsaWtkeGlicXlkdHBuZ3lhb25nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIxODg4NTIsImV4cCI6MjEwNzc2NDg1Mn0.IoHC24a5Epa9RTm4YoGZDvrEbHyUJG9kMT63PgOqDTU' }; // URL du projet Supabase + clé anon publique (jamais une clé service_role)
+const CLASSEMENT_PUBLIC = { url: 'https://blikdxibqydtpngyaong.supabase.co', cleAnonyme: 'COLLE_TA_CLE_ICI' }; // clé anon publique (jamais service_role)
 let statutTopPublic = 'Classement local sur cet appareil';
 const cleJoueur = nom => String(nom || 'Joueur').trim().toLocaleLowerCase();
 function meilleursScores(lignes) {
@@ -1434,7 +1434,7 @@ async function chargerTopPublic() {
     classement = meilleursScores(data.map(e => ({ n: e.pseudo, t: Number(e.temps), a: e.forme })));
     try { localStorage.setItem(CLE_TOP, JSON.stringify(classement)); } catch (e) {}
     statutTopPublic = '🌐 Classement public en ligne'; afficherTop();
-  } catch (e) { statutTopPublic = 'Classement public indisponible — vérifie la configuration Supabase'; afficherTop(); }
+  } catch (e) { statutTopPublic = 'Classement public indisponible (' + (e && e.message ? e.message : e) + ')'; afficherTop(); }
 }
 async function publierScorePublic(nom, temps, zone) {
   if (!CLASSEMENT_PUBLIC.url || !CLASSEMENT_PUBLIC.cleAnonyme) return;
@@ -1458,7 +1458,7 @@ async function publierScorePublic(nom, temps, zone) {
       r = await fetch(base, { method: 'POST', headers: { ...headers, Prefer: 'return=minimal' }, body: donnees });
     }
     if (!r.ok) throw new Error('HTTP ' + r.status); await chargerTopPublic();
-  } catch (e) { statutTopPublic = 'Record gardé localement ; publication en ligne échouée'; afficherTop(); }
+  } catch (e) { statutTopPublic = 'Record gardé localement ; publication en ligne échouée (' + (e && e.message ? e.message : e) + ')'; afficherTop(); }
 }
 // On garde le meilleur temps de chaque joueur DANS CHAQUE ZONE. Le filtre permet de voir « Toutes » les zones
 // (meilleur temps de chaque joueur) ou une seule zone. Les meilleurs temps sont toujours en haut.
