@@ -1409,7 +1409,7 @@ if (CONFIG.ZONES.some(z => z.nom === profil.arene)) choisirArene(profil.arene);
 /* ---------- Classement : local par défaut + synchronisation publique optionnelle ---------- */
 // Pour un classement réellement public, crée une table Supabase et renseigne les deux valeurs ci-dessous.
 // Sans identifiants, le jeu conserve les scores localement et ne prétend pas qu'ils sont partagés.
-const CLASSEMENT_PUBLIC = { url: 'COLLE_ICI_TON_URL_SUPABASE', cleAnonyme: 'COLLE_ICI_TA_CLE_ANON' }; // URL du projet Supabase + clé anon publique (jamais une clé service_role)
+const CLASSEMENT_PUBLIC = { url: 'https://abcdxyz.supabase.co', cleAnonyme: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJsaWtkeGlicXlkdHBuZ3lhb25nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIxODg4NTIsImV4cCI6MjEwNzc2NDg1Mn0.IoHC24a5Epa9RTm4YoGZDvrEbHyUJG9kMT63PgOqDTU' }; // URL du projet Supabase + clé anon publique (jamais une clé service_role)
 let statutTopPublic = 'Classement local sur cet appareil';
 const cleJoueur = nom => String(nom || 'Joueur').trim().toLocaleLowerCase();
 function meilleursScores(lignes) {
